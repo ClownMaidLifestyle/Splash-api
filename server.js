@@ -22,9 +22,12 @@ app.get("/", (request, response)=>{
 
 app.listen(PORT, ()=> console.log(`APP is listening on port ${PORT}`));
 
-const API = `https://api.unsplash.com/search/photos/?client_id=${process.env.ACCESS_KEY}&query=wizard`;
+
 
 app.get("/photos", async (request, response)=>{
+
+    let subject=request.query.subject;
+    const API = `https://api.unsplash.com/search/photos/?client_id=${process.env.ACCESS_KEY}&query=${subject}`;
     await axios.get(API);
     const res = await axios.get(API);
     console.log(res.data.results[0].urls.regular);
@@ -34,7 +37,7 @@ app.get("/photos", async (request, response)=>{
             id: photo.id,
             img_url: photo.urls.regular,
             original_image: photo.links.self,
-            photographer: photo.user.name
+            photographer: photo.user.name,
         }
        
     })
